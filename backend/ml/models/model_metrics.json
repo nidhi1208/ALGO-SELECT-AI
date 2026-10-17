@@ -1,0 +1,120 @@
+{
+  "best_model_name": "RandomForest",
+  "best_accuracy": 0.9111,
+  "model_comparison": {
+    "RandomForest": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.9111,
+      "cv_mean": 0.8852,
+      "cv_std": 0.0278
+    },
+    "GradientBoosting": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.8944,
+      "cv_mean": 0.8741,
+      "cv_std": 0.0111
+    },
+    "MLP_NeuralNet": {
+      "train_accuracy": 0.9407,
+      "test_accuracy": 0.9111,
+      "cv_mean": 0.8944,
+      "cv_std": 0.015
+    },
+    "SVM_RBF": {
+      "train_accuracy": 0.9296,
+      "test_accuracy": 0.9,
+      "cv_mean": 0.8981,
+      "cv_std": 0.0166
+    },
+    "KNN": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.8889,
+      "cv_mean": 0.8574,
+      "cv_std": 0.0224
+    }
+  },
+  "feature_importances": {
+    "reverse_sortedness_ratio": 0.2076,
+    "sortedness_ratio": 0.1668,
+    "duplicate_ratio": 0.1398,
+    "range_to_size_ratio": 0.0982,
+    "size": 0.071,
+    "log_size": 0.067,
+    "runs_ratio": 0.0596,
+    "std_dev": 0.0549,
+    "entropy_proxy": 0.0537,
+    "range_val": 0.0486,
+    "is_integer": 0.0328
+  },
+  "classes": [
+    "CountingSort",
+    "InsertionSort",
+    "MergeSort",
+    "QuickSort",
+    "RadixSort",
+    "TimSort"
+  ],
+  "avg_speedup_vs_default": 8.01,
+  "avg_time_saved_pct": 55.1,
+  "confusion_matrix": {
+    "classes": [
+      "CountingSort",
+      "InsertionSort",
+      "MergeSort",
+      "QuickSort",
+      "RadixSort",
+      "TimSort"
+    ],
+    "matrix": [
+      [
+        77,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        55,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        31,
+        1,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        3,
+        1,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ]
+    ]
+  },
+  "dataset_size": 720
+}

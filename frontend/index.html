@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALGO·SELECT AI — Algorithm Selection via Time Complexity & Machine Learning</title>
+  <meta name="description" content="AI-Based Algorithm Selection Using Time Complexity and Machine Learning for DAA. Exploits instance features and Rice's theorem to select optimal algorithms." />
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Chart.js for interactive analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body class="dark-theme">
+  <!-- Top Background Ambient Glows -->
+  <div class="glow-orb orb-primary"></div>
+  <div class="glow-orb orb-secondary"></div>
+  <div class="glow-orb orb-accent"></div>
+
+  <!-- Header & Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>ALGO·SELECT <span class="badge-ai">AI</span></h1>
+          <p class="brand-subtitle">Time Complexity & Machine Learning Algorithm Selection Engine</p>
+        </div>
+      </div>
+
+      <!-- Live Status Telemetry -->
+      <div class="header-status">
+        <div class="status-pill" id="system-status-pill">
+          <span class="pulse-dot"></span>
+          <span id="model-status-text">Model Active: Random Forest (94.2% Acc)</span>
+        </div>
+        <div class="status-speedup">
+          <span class="speedup-label">Avg Speedup:</span>
+          <span class="speedup-val" id="header-speedup-val">2.68x</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="nav-tab active" data-tab="tab-sorting" role="tab" id="tab-btn-sorting">
+        <span class="tab-icon">⚡</span> Sorting Arena
+      </button>
+      <button class="nav-tab" data-tab="tab-graphs" role="tab" id="tab-btn-graphs">
+        <span class="tab-icon">🕸️</span> Graph Networks
+      </button>
+      <button class="nav-tab" data-tab="tab-knapsack" role="tab" id="tab-btn-knapsack">
+        <span class="tab-icon">🎒</span> 0/1 Knapsack
+      </button>
+      <button class="nav-tab" data-tab="tab-analytics" role="tab" id="tab-btn-analytics">
+        <span class="tab-icon">📊</span> ML Model Analytics & XAI
+      </button>
+      <button class="nav-tab" data-tab="tab-curves" role="tab" id="tab-btn-curves">
+        <span class="tab-icon">📈</span> Scaling Curves
+      </button>
+      <button class="nav-tab" data-tab="tab-theory" role="tab" id="tab-btn-theory">
+        <span class="tab-icon">📖</span> Theory & Math
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-container">
+    
+    <!-- ============================================================== -->
+    <!-- TAB 1: SORTING ARENA (FLAGSHIP INTERACTIVE DEMO)                -->
+    <!-- ============================================================== -->
+    <section class="tab-content active" id="tab-sorting" role="tabpanel">
+      <!-- Section Intro Banner -->
+      <div class="glass-card section-intro">
+        <div class="intro-content">
+          <div class="domain-tag">Flagship Domain</div>
+          <h2>Sorting Problem Suite & Real-Time Race Arena</h2>
+          <p>
+            Experience Rice's Theorem in action. Extract $O(N)$ meta-features (sortedness, range-to-size ratio, duplicates, entropy) in under 0.5ms and predict whether 
+            <strong>QuickSort</strong>, <strong>CountingSort</strong>, <strong>TimSort</strong>, <strong>MergeSort</strong>, <strong>HeapSort</strong>, <strong>InsertionSort</strong>, or <strong>RadixSort</strong> will achieve minimal wall-clock runtime.
+          </p>
+        </div>
+        <div class="intro-stats">
+          <div class="stat-box">
+            <span class="stat-number">7</span>
+            <span class="stat-title">Candidate Algorithms</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">O(N)</span>
+            <span class="stat-title">Feature Extraction</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">&lt;1ms</span>
+            <span class="stat-title">Inference Latency</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Layout: Controls + Telemetry -->
+      <div class="studio-grid">
+        
+        <!-- Left Panel: Input & Generator Controls -->
+        <div class="glass-card controls-card">
+          <div class="card-header">
+            <h3><span class="icon">🎛️</span> Input Configuration Studio</h3>
+            <span class="subtext">Configure custom inputs or generate synthetic distributions</span>
+          </div>
+
+          <!-- Quick Distribution Presets -->
+          <div class="preset-section">
+            <label class="control-label">Distribution Presets:</label>
+            <div class="preset-chips">
+              <button class="chip-btn active" data-preset="small_range_int" title="Favors CountingSort O(N + K)">
+                🎯 Small Range (CountingSort)
+              </button>
+              <button class="chip-btn" data-preset="nearly_sorted" title="Favors TimSort / InsertionSort">
+                📈 Nearly Sorted 95%
+              </button>
+              <button class="chip-btn" data-preset="random_uniform_int" title="General distribution (QuickSort)">
+                🎲 Uniform Random
+              </button>
+              <button class="chip-btn" data-preset="few_unique" title="Heavy duplicates">
+                👥 High Duplicates
+              </button>
+              <button class="chip-btn" data-preset="small_array" title="Small N <= 20 (InsertionSort)">
+                🤏 Small Array (N=18)
+              </button>
+              <button class="chip-btn" data-preset="reverse_sorted" title="Reversed order">
+                📉 Reverse Sorted
+              </button>
+              <button class="chip-btn" data-preset="gaussian_floats" title="Floating point numbers">
+                🌊 Gaussian Floats
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Sliders -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="array-size-slider">Array Size (N):</label>
+              <span class="slider-value" id="size-val-display">800</span>
+            </div>
+            <input type="range" id="array-size-slider" min="10" max="6000" step="10" value="800" class="styled-slider" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="range-k-slider">Value Range / Bound (K):</label>
+              <span class="slider-value" id="range-val-display">150</span>
+            </div>
+            <input type="range" id="range-k-slider" min="5" max="20000" step="5" value="150" class="styled-slider" />
+          </div>
+
+          <!-- Manual Array Input Box -->
+          <div class="custom-input-group">
+            <div class="textarea-header">
+              <label for="custom-array-input">✍️ Manual User Input Array:</label>
+              <button class="btn-text-action" id="btn-randomize">🎲 Regenerate</button>
+            </div>
+            <textarea id="custom-array-input" rows="3" placeholder="Type or paste comma-separated numbers (e.g. 45, 12, 89, 3, 27, 64, 18, 92)..."></textarea>
+            
+            <div class="manual-preset-chips">
+              <span class="subtext-sm">Quick Manual Samples:</span>
+              <button class="chip-btn-sm" id="btn-manual-sort-sample1">[45, 12, 89, 3, 27, ...]</button>
+              <button class="chip-btn-sm" id="btn-manual-sort-sample2">[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]</button>
+              <button class="chip-btn-sm" id="btn-manual-sort-sample3">[5, 1, 4, 2, 8, 5, 1, 4, 2, 8]</button>
+            </div>
+
+            <div class="input-action-row">
+              <button id="btn-apply-manual-sort" class="btn btn-sm btn-secondary">
+                ✓ Apply Manual Input
+              </button>
+              <div class="input-meta-info" id="input-items-count">Loaded items: 800</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons-group">
+            <button id="btn-predict-sort" class="btn btn-primary">
+              <span class="btn-icon">🧠</span> Run AI Prediction
+            </button>
+            <button id="btn-benchmark-race" class="btn btn-glow">
+              <span class="btn-icon">🚀</span> Run Live Benchmark Race
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Panel: Feature Telemetry HUD & AI Decision -->
+        <div class="right-column">
+          
+          <!-- O(N) Feature Extraction HUD -->
+          <div class="glass-card telemetry-card">
+            <div class="card-header">
+              <h3><span class="icon">🔬</span> O(N) Meta-Feature Telemetry HUD</h3>
+              <span class="subtext latency-badge" id="extraction-latency">Extraction: 0.18 ms</span>
+            </div>
+            <div class="feature-metrics-grid" id="feature-metrics-grid">
+              <div class="metric-card">
+                <span class="metric-name">Sortedness Ratio</span>
+                <span class="metric-val" id="feat-sortedness">0.51</span>
+                <div class="metric-bar-bg"><div class="metric-bar-fill" id="bar-sortedness" style="width: 51%"></div></div>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Range / Size Ratio (K/N)</span>
+                <span class="metric-val" id="feat-range-ratio">0.19</span>
+                <div class="metric-bar-bg"><div class="metric-bar-fill" id="bar-range-ratio" style="width: 19%"></div></div>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Duplicate Ratio</span>
+                <span class="metric-val" id="feat-duplicates">0.18</span>
+                <div class="metric-bar-bg"><div class="metric-bar-fill" id="bar-duplicates" style="width: 18%"></div></div>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Monotonic Runs Ratio</span>
+                <span class="metric-val" id="feat-runs">0.49</span>
+                <div class="metric-bar-bg"><div class="metric-bar-fill" id="bar-runs" style="width: 49%"></div></div>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Data Type</span>
+                <span class="metric-val text-accent" id="feat-is-int">Integer</span>
+                <span class="metric-sub">Non-comparison ready</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-name">Entropy Proxy</span>
+                <span class="metric-val" id="feat-entropy">3.12</span>
+                <span class="metric-sub">Distribution spread</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Prediction & XAI Card -->
+          <div class="glass-card prediction-card" id="ai-prediction-card">
+            <div class="card-header">
+              <h3><span class="icon">⚡</span> Machine Learning Selection & Explainability (XAI)</h3>
+              <span class="model-tag" id="prediction-model-tag">RandomForest Classifier</span>
+            </div>
+
+            <div class="winner-display">
+              <div class="winner-main">
+                <div class="winner-badge-box">
+                  <span class="winner-crown">👑 AI Selected:</span>
+                  <h2 class="winner-name" id="winner-algo-name">CountingSort</h2>
+                  <span class="winner-complexity" id="winner-complexity">O(N + K) Non-Comparison</span>
+                </div>
+                <div class="winner-speedup-box">
+                  <span class="speedup-factor-num" id="winner-speedup-num">3.8x</span>
+                  <span class="speedup-factor-desc">Predicted Faster than QuickSort</span>
+                </div>
+              </div>
+
+              <!-- Confidence Probability Bars -->
+              <div class="confidence-section">
+                <label class="control-label">Algorithm Portfolio Probability Distribution:</label>
+                <div class="prob-distribution-bars" id="prob-distribution-bars">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+              <!-- Explainable AI (XAI) Natural Language Rationale -->
+              <div class="xai-insight-box">
+                <div class="xai-title">
+                  <span class="xai-icon">💡</span> Explainable AI (XAI) Decision Rationale:
+                </div>
+                <p class="xai-text" id="xai-text-content">
+                  Compact integer range (Range/N = 0.19) triggers linear non-comparison acceleration. CountingSort bypasses the &Omega;(N log N) comparison lower bound in O(N + K) time.
+                </p>
+                <div class="theory-comparison-pill" id="theory-comparison-pill">
+                  ✅ Theoretical Rule Engine Concurs: CountingSort is mathematically optimal.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- ALGORITHM STEP-BY-STEP VISUALIZER IN OUTPUT AREA               -->
+      <!-- ============================================================== -->
+      <div class="glass-card visualization-card" id="sorting-viz-card">
+        <div class="card-header">
+          <div class="viz-header-title">
+            <h3><span class="icon">🎬</span> Step-by-Step Algorithm Visualizer</h3>
+            <span class="subtext">Watch array elements step through comparison & sorting phases</span>
+          </div>
+          
+          <div class="viz-controls-inline">
+            <select id="sort-viz-algo-select" class="styled-select-sm">
+              <option value="AI_RECOMMENDED">👑 AI Recommended Algorithm</option>
+              <option value="QuickSort">QuickSort</option>
+              <option value="MergeSort">MergeSort</option>
+              <option value="HeapSort">HeapSort</option>
+              <option value="InsertionSort">InsertionSort</option>
+              <option value="CountingSort">CountingSort</option>
+              <option value="RadixSort">RadixSort</option>
+              <option value="TimSort">TimSort</option>
+            </select>
+            <button id="btn-sort-viz-play" class="btn btn-sm btn-glow">▶ Play</button>
+            <button id="btn-sort-viz-pause" class="btn btn-sm btn-secondary" disabled>⏸ Pause</button>
+            <button id="btn-sort-viz-step" class="btn btn-sm btn-secondary">⏭ Step</button>
+            <button id="btn-sort-viz-reset" class="btn btn-sm btn-secondary">🔄 Reset</button>
+            <div class="speed-control-sm">
+              <label for="sort-viz-speed">Speed:</label>
+              <input type="range" id="sort-viz-speed" min="1" max="100" value="50" class="styled-slider-sm" />
+            </div>
+          </div>
+        </div>
+
+        <div class="viz-bars-container" id="sort-viz-bars-container">
+          <!-- Rendered via JS -->
+        </div>
+
+        <div class="viz-status-bar">
+          <div class="viz-step-badge" id="sort-viz-step-badge">Step: 0 / 0</div>
+          <div class="viz-log-text" id="sort-viz-log-text">Ready to visualize algorithm steps. Click Play or Step.</div>
+          <div class="viz-legend">
+            <span class="legend-item"><span class="legend-color legend-compare"></span> Comparing</span>
+            <span class="legend-item"><span class="legend-color legend-swap"></span> Swapping</span>
+            <span class="legend-item"><span class="legend-color legend-pivot"></span> Pivot/Min</span>
+            <span class="legend-item"><span class="legend-color legend-sorted"></span> Sorted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Benchmark Race Arena Section -->
+      <div class="glass-card race-card" id="race-section">
+        <div class="card-header">
+          <div class="race-header-title">
+            <h3><span class="icon">🏁</span> Live Empirical Race Arena</h3>
+            <span class="subtext">All 7 algorithms executed on identical array with microsecond precision</span>
+          </div>
+          <div class="race-actions">
+            <span class="race-status-text" id="race-status-text">Ready to run</span>
+            <button class="btn btn-sm btn-secondary" id="btn-export-results">📥 Export JSON</button>
+          </div>
+        </div>
+
+        <!-- Visual Animated Race Bars -->
+        <div class="race-tracks-container" id="race-tracks">
+          <!-- Dynamically populated with track bars -->
+        </div>
+
+        <!-- Telemetry Leaderboard Table -->
+        <div class="table-responsive">
+          <table class="telemetry-table" id="telemetry-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Algorithm</th>
+                <th>Measured Time (&mu;s)</th>
+                <th>Time (ms)</th>
+                <th>Comparisons</th>
+                <th>Swaps / Moves</th>
+                <th>Theoretical Big-O</th>
+                <th>Speedup vs QuickSort</th>
+                <th>Verified</th>
+              </tr>
+            </thead>
+            <tbody id="telemetry-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 2: GRAPH NETWORKS (MST & SHORTEST PATH & SIMULATION)       -->
+    <!-- ============================================================== -->
+    <section class="tab-content" id="tab-graphs" role="tabpanel">
+      <div class="glass-card section-intro">
+        <div class="intro-content">
+          <div class="domain-tag">Domain 2: Graph Theory</div>
+          <h2>Graph Algorithm Selection & Interactive Step Simulator</h2>
+          <p>
+            Graph density $D = \frac{2|E|}{|V|(|V|-1)}$ and edge-weight properties fundamentally change asymptotic superiority. 
+            Simulate <strong>Kruskal</strong>, <strong>Prim</strong>, <strong>Dijkstra</strong> & <strong>Bellman-Ford</strong> step-by-step on an interactive graph canvas!
+          </p>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- Controls & Manual Input Studio -->
+        <div class="glass-card controls-card">
+          <div class="card-header">
+            <h3><span class="icon">🕸️</span> Graph Instance & Manual Input Studio</h3>
+          </div>
+
+          <div class="preset-section">
+            <label class="control-label">Problem Category:</label>
+            <div class="toggle-group" id="graph-problem-toggle">
+              <button class="toggle-btn active" data-type="MST">Minimum Spanning Tree (MST)</button>
+              <button class="toggle-btn" data-type="ShortestPath">Shortest Path</button>
+            </div>
+          </div>
+
+          <!-- Synthetic Sliders & Manual Number Inputs -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="graph-v-slider">Vertices (|V|):</label>
+              <div class="manual-input-inline">
+                <input type="number" id="graph-v-number-input" min="2" max="1000" value="6" class="styled-number-input-sm" title="Type manual vertices count" />
+                <span class="slider-value" id="graph-v-display">6</span>
+              </div>
+            </div>
+            <input type="range" id="graph-v-slider" min="4" max="50" step="1" value="6" class="styled-slider" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="graph-density-slider">Graph Density (%):</label>
+              <div class="manual-input-inline">
+                <input type="number" id="graph-density-number-input" min="1" max="100" value="35" class="styled-number-input-sm" title="Type manual density percentage" />
+                <span class="slider-value" id="graph-density-display">35%</span>
+              </div>
+            </div>
+            <input type="range" id="graph-density-slider" min="10" max="100" step="5" value="35" class="styled-slider" />
+          </div>
+
+          <div class="toggle-switch-group">
+            <label class="switch-container">
+              <input type="checkbox" id="graph-neg-weights-toggle" />
+              <span class="switch-slider"></span>
+            </label>
+            <span class="switch-label">Allow Negative Edge Weights (Mandates Bellman-Ford)</span>
+          </div>
+
+          <!-- MANUAL GRAPH USER INPUT AREA -->
+          <div class="custom-input-group style-manual-graph">
+            <div class="textarea-header">
+              <label>✍️ Manual Graph User Input:</label>
+            </div>
+
+            <div class="manual-input-subfields" style="margin-bottom: 0.75rem;">
+              <div class="input-subfield-row">
+                <div class="input-subfield">
+                  <label for="graph-manual-v">Manual Vertices (|V|):</label>
+                  <input type="number" id="graph-manual-v" min="2" max="1000" value="6" class="styled-number-input" />
+                </div>
+                <div class="input-subfield">
+                  <label for="graph-manual-density">Manual Density (%):</label>
+                  <input type="number" id="graph-manual-density" min="1" max="100" value="35" class="styled-number-input" />
+                </div>
+              </div>
+            </div>
+
+            <div class="textarea-header">
+              <label for="graph-manual-edges">Manual Edges List (<code>u v weight</code> per line):</label>
+            </div>
+            <textarea id="graph-manual-edges" rows="4" placeholder="0 1 4&#10;0 2 2&#10;1 2 1&#10;1 3 5&#10;2 3 8&#10;2 4 10&#10;3 4 2&#10;3 5 6&#10;4 5 3"></textarea>
+
+            <div class="manual-preset-chips">
+              <span class="subtext-sm">Presets:</span>
+              <button class="chip-btn-sm" id="btn-graph-preset-sample">6-Node Network</button>
+              <button class="chip-btn-sm" id="btn-graph-preset-k4">K4 Complete</button>
+              <button class="chip-btn-sm" id="btn-graph-preset-neg">Negative Edge</button>
+            </div>
+
+            <div class="input-action-row">
+              <button id="btn-apply-manual-graph" class="btn btn-sm btn-secondary">
+                ✓ Apply Manual Graph Input
+              </button>
+              <span class="input-meta-info" id="graph-edges-count">Edges: 9</span>
+            </div>
+          </div>
+
+          <button id="btn-predict-graph" class="btn btn-primary" style="margin-top: 1rem;">
+            <span class="btn-icon">🧠</span> Predict Graph Algorithm
+          </button>
+        </div>
+
+        <!-- Graph AI Output -->
+        <div class="glass-card telemetry-card">
+          <div class="card-header">
+            <h3><span class="icon">🔬</span> Graph Structural Analysis & Selection</h3>
+          </div>
+
+          <div class="feature-metrics-grid">
+            <div class="metric-card">
+              <span class="metric-name">Vertices (|V|)</span>
+              <span class="metric-val" id="graph-feat-v">6</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">Edges (|E|)</span>
+              <span class="metric-val" id="graph-feat-e">9</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">Density (D)</span>
+              <span class="metric-val text-accent" id="graph-feat-density">0.350</span>
+              <span class="metric-sub">Sparse Graph</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">Negative Weights</span>
+              <span class="metric-val" id="graph-feat-neg">No</span>
+            </div>
+          </div>
+
+          <div class="winner-display" style="margin-top: 1.5rem;">
+            <div class="winner-badge-box">
+              <span class="winner-crown">👑 Optimal Algorithm:</span>
+              <h2 class="winner-name" id="graph-winner-name">Kruskal's Algorithm</h2>
+              <span class="winner-complexity" id="graph-winner-complexity">O(E log E) with Disjoint Set Union</span>
+            </div>
+            <div class="xai-insight-box" style="margin-top: 1rem;">
+              <div class="xai-title"><span class="xai-icon">💡</span> Complexity Justification:</div>
+              <p class="xai-text" id="graph-xai-reasoning">
+                Sparse graph (Density = 0.350). O(E log E) Disjoint-Set union dominates dense matrix methods (O(V^2)) by saving edge relaxations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- INTERACTIVE GRAPH CANVAS SIMULATOR (FEATURE HIGHLIGHT)         -->
+      <!-- ============================================================== -->
+      <div class="glass-card graph-sim-card" id="graph-sim-card">
+        <div class="card-header">
+          <div class="viz-header-title">
+            <h3><span class="icon">🕸️</span> Interactive Graph Visualizer & Algorithm Simulator</h3>
+            <span class="subtext">Drag nodes, adjust source node, and watch Kruskal, Prim, Dijkstra & Bellman-Ford execute live</span>
+          </div>
+
+          <div class="viz-controls-inline">
+            <select id="graph-sim-algo-select" class="styled-select-sm">
+              <option value="Kruskal">Kruskal's MST</option>
+              <option value="Prim">Prim's MST</option>
+              <option value="Dijkstra">Dijkstra's Shortest Path</option>
+              <option value="BellmanFord">Bellman-Ford Shortest Path</option>
+            </select>
+            <div class="source-node-picker">
+              <label for="graph-sim-source">Source Node:</label>
+              <select id="graph-sim-source" class="styled-select-sm" style="min-width: 60px;">
+                <option value="0">0</option>
+              </select>
+            </div>
+            <button id="btn-graph-sim-play" class="btn btn-sm btn-glow">▶ Run Simulation</button>
+            <button id="btn-graph-sim-pause" class="btn btn-sm btn-secondary" disabled>⏸ Pause</button>
+            <button id="btn-graph-sim-step" class="btn btn-sm btn-secondary">⏭ Step</button>
+            <button id="btn-graph-sim-reset" class="btn btn-sm btn-secondary">🔄 Reset</button>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="graph-canvas-wrapper">
+          <canvas id="graph-sim-canvas" width="1000" height="420"></canvas>
+          <div class="canvas-overlay-tip">💡 Tip: Drag vertices with mouse to rearrange layout</div>
+        </div>
+
+        <!-- Telemetry & Explanation Banner -->
+        <div class="viz-status-bar">
+          <div class="viz-step-badge" id="graph-sim-step-badge">Step: 0 / 0</div>
+          <div class="viz-log-text" id="graph-sim-log-text">Click Run Simulation to visualize algorithm steps on the graph network.</div>
+          <div class="viz-legend">
+            <span class="legend-item"><span class="legend-color" style="background:#00f2fe;"></span> Current Edge</span>
+            <span class="legend-item"><span class="legend-color" style="background:#10b981;"></span> In MST / Path</span>
+            <span class="legend-item"><span class="legend-color" style="background:#f43f5e;"></span> Cycle / Rejected</span>
+            <span class="legend-item"><span class="legend-color" style="background:#f59e0b;"></span> Active Frontier</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: 0/1 KNAPSACK PROBLEM (WITH MANUAL INPUT & VISUALIZER)   -->
+    <!-- ============================================================== -->
+    <section class="tab-content" id="tab-knapsack" role="tabpanel">
+      <div class="glass-card section-intro">
+        <div class="intro-content">
+          <div class="domain-tag">Domain 3: NP-Hard Optimisation</div>
+          <h2>0/1 Knapsack: Dynamic Programming vs Branch & Bound vs Meet-in-the-Middle</h2>
+          <p>
+            Dynamic Programming runs in pseudo-polynomial $O(N \cdot W)$ time, which thrives when capacity $W$ is small. 
+            However, when $W$ is enormous ($W = 10^7$) and $N \le 30$, Meet-in-the-Middle $O(2^{N/2})$ cuts state space in half. 
+          </p>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- Knapsack Configuration & Manual Input -->
+        <div class="glass-card controls-card">
+          <div class="card-header">
+            <h3><span class="icon">🎒</span> Knapsack Input Studio</h3>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="knapsack-n-slider">Number of Items (N):</label>
+              <span class="slider-value" id="knapsack-n-display">6</span>
+            </div>
+            <input type="range" id="knapsack-n-slider" min="3" max="50" step="1" value="6" class="styled-slider" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label for="knapsack-w-slider">Knapsack Capacity (W):</label>
+              <span class="slider-value" id="knapsack-w-display">15</span>
+            </div>
+            <input type="range" id="knapsack-w-slider" min="5" max="2000" step="5" value="15" class="styled-slider" />
+          </div>
+
+          <div class="preset-section">
+            <label class="control-label">Instance Scenarios:</label>
+            <div class="preset-chips">
+              <button class="chip-btn active" data-kscenario="small_w">Small Capacity (DP Optimal)</button>
+              <button class="chip-btn" data-kscenario="huge_w_small_n">Huge W, Small N (Meet-in-Middle)</button>
+              <button class="chip-btn" data-kscenario="large_scale">Large Scale (Branch & Bound)</button>
+            </div>
+          </div>
+
+          <!-- MANUAL USER INPUT FOR KNAPSACK -->
+          <div class="custom-input-group style-manual-knapsack">
+            <div class="textarea-header">
+              <label>✍️ Manual User Input Items & Capacity:</label>
+            </div>
+
+            <div class="manual-input-subfields">
+              <div class="input-subfield">
+                <label for="knapsack-manual-capacity">Capacity (W):</label>
+                <input type="number" id="knapsack-manual-capacity" value="15" min="1" max="100000" class="styled-number-input" />
+              </div>
+
+              <div class="input-subfield">
+                <label for="knapsack-manual-weights">Weights (comma-separated):</label>
+                <input type="text" id="knapsack-manual-weights" value="2, 3, 4, 5, 6, 7" class="styled-text-input" />
+              </div>
+
+              <div class="input-subfield">
+                <label for="knapsack-manual-values">Values (comma-separated):</label>
+                <input type="text" id="knapsack-manual-values" value="3, 4, 5, 8, 9, 11" class="styled-text-input" />
+              </div>
+            </div>
+
+            <div class="manual-preset-chips">
+              <span class="subtext-sm">Quick Samples:</span>
+              <button class="chip-btn-sm" id="btn-knap-preset-classic">Classic 6 Items (W=15)</button>
+              <button class="chip-btn-sm" id="btn-knap-preset-3item">3 Items (W=50)</button>
+            </div>
+
+            <div class="input-action-row">
+              <button id="btn-apply-manual-knapsack" class="btn btn-sm btn-secondary">
+                ✓ Apply Manual Input
+              </button>
+            </div>
+          </div>
+
+          <button id="btn-predict-knapsack" class="btn btn-primary" style="margin-top: 1rem;">
+            <span class="btn-icon">🧠</span> Predict Knapsack Solver
+          </button>
+        </div>
+
+        <div class="glass-card telemetry-card">
+          <div class="card-header">
+            <h3><span class="icon">🔬</span> Knapsack Meta-Feature Analysis</h3>
+          </div>
+
+          <div class="feature-metrics-grid">
+            <div class="metric-card">
+              <span class="metric-name">Items (N)</span>
+              <span class="metric-val" id="knap-feat-n">6</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">Capacity (W)</span>
+              <span class="metric-val" id="knap-feat-w">15</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">W / N Ratio</span>
+              <span class="metric-val text-accent" id="knap-feat-wn">2.5</span>
+              <span class="metric-sub">Tight table bounds</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-name">Estimated Table States</span>
+              <span class="metric-val" id="knap-feat-states">90</span>
+            </div>
+          </div>
+
+          <div class="winner-display" style="margin-top: 1.5rem;">
+            <div class="winner-badge-box">
+              <span class="winner-crown">👑 Optimal Algorithm:</span>
+              <h2 class="winner-name" id="knap-winner-name">Dynamic Programming</h2>
+              <span class="winner-complexity" id="knap-winner-complexity">O(N * W) Pseudo-Polynomial</span>
+            </div>
+            <div class="xai-insight-box" style="margin-top: 1rem;">
+              <div class="xai-title"><span class="xai-icon">💡</span> Complexity Justification:</div>
+              <p class="xai-text" id="knap-xai-reasoning">
+                Compact capacity W=15 &lt;= 5000. DP table occupies negligible memory and guarantees polynomial execution without exponential recursion.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- KNAPSACK DP TABLE & SELECTION VISUALIZER                       -->
+      <!-- ============================================================== -->
+      <div class="glass-card knapsack-viz-card" id="knapsack-viz-card">
+        <div class="card-header">
+          <div class="viz-header-title">
+            <h3><span class="icon">🎬</span> DP Table & Item Selection Visualizer</h3>
+            <span class="subtext">Watch how subproblems fill cell-by-cell and backtrack optimal item selection</span>
+          </div>
+
+          <div class="viz-controls-inline">
+            <button id="btn-knap-viz-play" class="btn btn-sm btn-glow">▶ Play DP Animation</button>
+            <button id="btn-knap-viz-pause" class="btn btn-sm btn-secondary" disabled>⏸ Pause</button>
+            <button id="btn-knap-viz-step" class="btn btn-sm btn-secondary">⏭ Step</button>
+            <button id="btn-knap-viz-reset" class="btn btn-sm btn-secondary">🔄 Reset</button>
+          </div>
+        </div>
+
+        <div class="knap-viz-container">
+          <!-- Dynamic DP Table Grid -->
+          <div class="dp-grid-wrapper" id="knap-dp-grid-wrapper">
+            <!-- Table dynamically populated -->
+          </div>
+
+          <!-- Items Picked Summary -->
+          <div class="knap-items-summary" id="knap-items-summary">
+            <h4>Backtracked Optimal Subset:</h4>
+            <div class="knap-picked-chips" id="knap-picked-chips">
+              <!-- Rendered via JS -->
+            </div>
+            <div class="knap-total-stats">
+              <span>Total Weight: <strong id="knap-total-weight">0</strong> / <span id="knap-target-w">15</span></span>
+              <span>Total Profit: <strong id="knap-total-profit" class="text-accent">0</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explainable AI (XAI) Simulation Insight Engine & Rationale -->
+        <div class="knap-sim-xai-card" id="knap-sim-xai-card">
+          <div class="xai-header-bar">
+            <span class="xai-badge">🤖 EXPLAINABLE AI (XAI) SIMULATION INSIGHT ENGINE</span>
+            <h4>Live Step-by-Step Decision & Rationale</h4>
+          </div>
+          
+          <div class="xai-content-grid">
+            <div class="xai-formula-box">
+              <span class="formula-label">Active Cell Transition Formula:</span>
+              <div class="formula-code" id="knap-xai-formula">
+                dp[i][w] = Math.max( dp[i-1][w], dp[i-1][w - w<sub>i</sub>] + v<sub>i</sub> )
+              </div>
+            </div>
+
+            <div class="xai-options-breakdown">
+              <div class="xai-option-card option-exclude" id="knap-xai-opt-exclude">
+                <span class="opt-tag">Option 1: EXCLUDE Item</span>
+                <span class="opt-val" id="knap-opt-exclude-val">dp[i-1][w] = 0</span>
+              </div>
+              <div class="xai-option-card option-include" id="knap-xai-opt-include">
+                <span class="opt-tag">Option 2: INCLUDE Item</span>
+                <span class="opt-val" id="knap-opt-include-val">v<sub>i</sub> + dp[i-1][w - w<sub>i</sub>] = 0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="knap-xai-step-explanation" id="knap-xai-step-explanation">
+            Click <strong>▶ Play DP Animation</strong> or <strong>⏭ Step</strong> to watch how XAI dynamically evaluates options cell-by-cell.
+          </div>
+        </div>
+
+        <!-- Explainable AI: Matrix Number Arrangement Guide -->
+        <div class="knap-matrix-guide-card">
+          <div class="guide-header">
+            <h4><span class="icon">🧩</span> Explainable AI: How Numbers Are Arranged in the Matrix</h4>
+            <span class="subtext">Core rules governing how subproblem values populate the Dynamic Programming table grid</span>
+          </div>
+
+          <div class="arrangement-steps-grid">
+            <div class="guide-step-chip">
+              <div class="step-num">1</div>
+              <div class="step-info">
+                <strong>Matrix Grid Setup</strong>
+                <p>Dimensions: <code>(N + 1)</code> rows &times; <code>(W + 1)</code> columns. Rows represent item choices (0 to N); columns represent capacity limits (0 to W).</p>
+              </div>
+            </div>
+
+            <div class="guide-step-chip">
+              <div class="step-num">2</div>
+              <div class="step-info">
+                <strong>Base Case Fill (Row 0 &amp; Col 0)</strong>
+                <p>Row 0 (0 items) &amp; Column 0 (0 capacity) are initialized with <code>0</code> profit since no value can be extracted without items or capacity.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-chip">
+              <div class="step-num">3</div>
+              <div class="step-info">
+                <strong>Sequential Arrangement Order</strong>
+                <p>Numbers are arranged <strong>Top-to-Bottom</strong> (Row 1 to N) and <strong>Left-to-Right</strong> (Col 0 to W), solving smaller subproblems first.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-chip">
+              <div class="step-num">4</div>
+              <div class="step-info">
+                <strong>Cell Assignment Decision Rule</strong>
+                <p>If <code>w<sub>i</sub> &gt; w</code>, copy value from cell directly above. Otherwise, place <code>max(Exclude, Include)</code> as the winning number in cell <code>(i, w)</code>.</p>
+              </div>
+            </div>
+
+            <div class="guide-step-chip">
+              <div class="step-num">5</div>
+              <div class="step-info">
+                <strong>Backtracking Solution Retrieval</strong>
+                <p>Starting at bottom-right <code>dp[N][W]</code>, if <code>dp[i][w] &ne; dp[i-1][w]</code>, Item <code>i</code> was picked into the optimal knapsack subset.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="viz-status-bar">
+          <div class="viz-step-badge" id="knap-viz-step-badge">Step: 0 / 0</div>
+          <div class="viz-log-text" id="knap-viz-log-text">Click Play DP Animation to watch the dynamic programming state updates.</div>
+          <div class="viz-legend">
+            <span class="legend-item"><span class="legend-color" style="background:#f59e0b;"></span> Active Cell</span>
+            <span class="legend-item"><span class="legend-color" style="background:#3b82f6;"></span> Exclude Source</span>
+            <span class="legend-item"><span class="legend-color" style="background:#a855f7;"></span> Include Source</span>
+            <span class="legend-item"><span class="legend-color" style="background:#10b981;"></span> Picked Item</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: ML MODEL ANALYTICS & XAI                                 -->
+    <!-- ============================================================== -->
+    <section class="tab-content" id="tab-analytics" role="tabpanel">
+      <div class="glass-card section-intro">
+        <div class="intro-content">
+          <div class="domain-tag">Meta-Learning Evaluation</div>
+          <h2>Machine Learning Model Benchmarks & Feature Importance</h2>
+          <p>
+            Empirical evaluation of 5 machine learning architectures trained on 1,500+ diverse problem instances. 
+            Random Forest demonstrates peak performance due to sharp decision boundaries corresponding to Big-O crossover thresholds.
+          </p>
+        </div>
+      </div>
+
+      <!-- Models Performance Grid -->
+      <div class="analytics-grid">
+        <!-- Model Comparison Table -->
+        <div class="glass-card">
+          <div class="card-header">
+            <h3><span class="icon">🏆</span> Model Comparison Leaderboard</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="telemetry-table" id="models-table">
+              <thead>
+                <tr>
+                  <th>Model Architecture</th>
+                  <th>Test Accuracy</th>
+                  <th>5-Fold CV Mean</th>
+                  <th>CV Std Dev</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="models-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Feature Importance Chart -->
+        <div class="glass-card">
+          <div class="card-header">
+            <h3><span class="icon">📊</span> Gini Feature Importance (Random Forest)</h3>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="featureImportanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix Card -->
+      <div class="glass-card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <h3><span class="icon">🎯</span> Algorithm Classification Confusion Matrix</h3>
+          <span class="subtext">Evaluated on holdout validation test set</span>
+        </div>
+        <div class="chart-wrapper" style="height: 380px;">
+          <canvas id="confusionMatrixChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 5: SCALING CURVES                                           -->
+    <!-- ============================================================== -->
+    <section class="tab-content" id="tab-curves" role="tabpanel">
+      <div class="glass-card section-intro">
+        <div class="intro-content">
+          <div class="domain-tag">Complexity Scalability</div>
+          <h2>Empirical Crossover Curves: Big-O in the Real World</h2>
+          <p>
+            Observe actual CPU execution times as $N$ scales from 15 to 2,500. 
+            Notice the classic crossover point where InsertionSort beats QuickSort for small $N \le 25$, 
+            and how CountingSort maintains strict linear slope $O(N)$ when value range $K$ is bounded.
+          </p>
+        </div>
+        <div class="curve-controls">
+          <label for="curve-dist-select">Instance Distribution:</label>
+          <select id="curve-dist-select" class="styled-select">
+            <option value="small_range_int">Small Integer Range (CountingSort vs QuickSort)</option>
+            <option value="random_uniform_int">Random Uniform (O(N log N) vs O(N^2))</option>
+            <option value="nearly_sorted">Nearly Sorted (TimSort Adaptation)</option>
+          </select>
+          <button id="btn-refresh-curves" class="btn btn-sm btn-primary">Refresh Curves</button>
+        </div>
+      </div>
+
+      <div class="glass-card" style="margin-top: 1.5rem;">
+        <div class="chart-wrapper" style="height: 480px;">
+          <canvas id="complexityCurveChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 6: THEORY & MATH                                            -->
+    <!-- ============================================================== -->
+    <section class="tab-content" id="tab-theory" role="tabpanel">
+      <div class="glass-card theory-card">
+        <div class="theory-section">
+          <h2>Rice's Theorem of Algorithm Selection (1976)</h2>
+          <p class="theory-lead">
+            In 1976, John R. Rice formulated the fundamental algorithm selection problem:
+          </p>
+          <div class="math-block">
+            $$\text{Given an instance } x \in \mathcal{P}, \text{ find } S(f(x)) = A^* \in \mathcal{A} \text{ such that } m(A^*, x) = \min_{A \in \mathcal{A}} m(A, x)$$
+          </div>
+          <p>Where:</p>
+          <ul class="theory-list">
+            <li><strong>$\mathcal{P}$ (Problem Space):</strong> The universe of all possible inputs (e.g. arrays of size $N$, graphs of order $|V|$).</li>
+            <li><strong>$f: \mathcal{P} \to \mathbb{R}^d$ (Feature Space):</strong> A vector of measurable characteristics (sortedness, range, entropy, density).</li>
+            <li><strong>$\mathcal{A} = \{A_1, A_2, \dots, A_k\}$ (Algorithm Portfolio):</strong> Candidate algorithms designed to solve $\mathcal{P}$.</li>
+            <li><strong>$m(A, x)$ (Performance Metric):</strong> CPU wall-clock execution time or operation count.</li>
+            <li><strong>$S: \mathbb{R}^d \to \mathcal{A}$ (Selection Mapping):</strong> Learned via Machine Learning (Random Forest, Gradient Boosting, MLP).</li>
+          </ul>
+
+          <h3>The Fundamental Constraint of Meta-Learning</h3>
+          <div class="alert-box">
+            <strong>Critical Criterion:</strong> The computational complexity of extracting features $T(f(x))$ must be strictly negligible compared to the execution time of the algorithms:
+            $$T(f(x)) \ll \min_{A \in \mathcal{A}} T(A(x))$$
+            In our implementation, sorting features are extracted in strict linear time $O(N)$ or sampled $O(1)$ in under $0.35\text{ ms}$, ensuring zero net latency overhead.
+          </div>
+
+          <h3>Why Asymptotic Big-O is Insufficient in Practice</h3>
+          <p>
+            Standard complexity theory focuses on the asymptotic behavior as $N \to \infty$, intentionally ignoring constant factors $c$ and lower-order terms:
+          </p>
+          <div class="math-block">
+            $$T_{\text{InsertionSort}}(N) = c_1 \cdot N^2 \quad \text{vs} \quad T_{\text{QuickSort}}(N) = c_2 \cdot N \log_2 N$$
+          </div>
+          <p>
+            Because InsertionSort executes minimal instructions per loop without recursive stack calls, $c_1 \approx 0.08 \ll c_2 \approx 1.4$. 
+            Consequently, for $N \le 24$:
+          </p>
+          <div class="math-block">
+            $$0.08 \cdot (20)^2 = 32 \text{ ops} \quad < \quad 1.4 \cdot (20 \cdot 4.32) = 120.96 \text{ ops}$$
+          </div>
+          <p>
+            Similarly, when data is composed of compact integers $K \le 2N$, CountingSort executes in $O(N + K)$, entirely bypassing the mathematical $\Omega(N \log N)$ lower bound for comparison sorts.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>DAA Project 2 — <strong>AI-Based Algorithm Selection Using Time Complexity and Machine Learning</strong></p>
+      <p class="footer-sub">Engineered with Python, FastAPI, Scikit-Learn, and Vanilla CSS</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
